@@ -15,6 +15,7 @@ import hum.swaroop.bose.entity.WeatherData
 import hum.swaroop.bose.repository.LocationRepository
 import hum.swaroop.bose.repository.WeatherRepository
 import hum.swaroop.bose.toFahrenheit
+import kotlinx.coroutines.experimental.async
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -34,41 +35,43 @@ class WeatherWorker : Worker() {
     }
 
     override fun doWork(): Result {
-        val id = sharedPreferences.getLong(CITY_ID, 0L)
-        var response: Response<WeatherData>? = null
-        if (id > 0) {
-            response = weatherRepository.getOpenWeatherDataByCityId(id)
-        } else {
-            val location = locationRepository.getLocation()
-            location.addOnSuccessListener {
-                response = weatherRepository
-                        .getOpenWeatherDataByCoordinates(it.latitude, it.longitude)
+        async {
+            val id = sharedPreferences.getLong(CITY_ID, 0L)
+            var response: Response<WeatherData>? = null
+            if (id > 0) {
+                response = weatherRepository.getOpenWeatherDataByCityId(id)
+            } else {
+                val location = locationRepository.getLocation()
+                location.addOnSuccessListener {
+                    response = weatherRepository
+                            .getOpenWeatherDataByCoordinates(it.latitude, it.longitude)
+                }
             }
-        }
 
-        response?.let {
-            val weatherData = it.body()
-            if (!it.isSuccessful || weatherData == null) return@let
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            val pendingIntent = PendingIntent.getActivity(applicationContext,
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            var notificationBuilder = NotificationCompat.Builder(applicationContext,
-                    applicationContext.packageName)
-            notificationBuilder = notificationBuilder
-                    .setSmallIcon(android.R.drawable.btn_star)
-                    .setContentTitle(applicationContext.getString(R.string.city_name,
-                            it.body()?.name, weatherData.sys?.country))
-                    .setContentText(applicationContext.getString(R.string.notification_text,
-                            weatherData.main?.temp?.toFahrenheit(),
-                            weatherData.weather?.get(0)?.description))
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
+            response?.let {
+                val weatherData = it.body()
+                if (!it.isSuccessful || weatherData == null) return@let
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                val pendingIntent = PendingIntent.getActivity(applicationContext,
+                        0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                var notificationBuilder = NotificationCompat.Builder(applicationContext,
+                        applicationContext.packageName)
+                notificationBuilder = notificationBuilder
+                        .setSmallIcon(android.R.drawable.btn_star)
+                        .setContentTitle(applicationContext.getString(R.string.city_name,
+                                it.body()?.name, weatherData.sys?.country))
+                        .setContentText(applicationContext.getString(R.string.notification_text,
+                                weatherData.main?.temp?.toFahrenheit(),
+                                weatherData.weather?.get(0)?.description))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
 
-            val notificationManager = applicationContext
-                    .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
-            notificationManager?.notify(1, notificationBuilder.build())
+                val notificationManager = applicationContext
+                        .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+                notificationManager?.notify(1, notificationBuilder.build())
+            }
         }
         return Result.SUCCESS
     }

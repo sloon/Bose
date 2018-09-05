@@ -4,6 +4,7 @@ import androidx.work.Worker
 import hum.swaroop.bose.BoseApplication
 import hum.swaroop.bose.dao.LocationDao
 import hum.swaroop.bose.repository.LocationRepository
+import kotlinx.coroutines.experimental.async
 import javax.inject.Inject
 
 class SaveLocationWorker : Worker() {
@@ -19,8 +20,10 @@ class SaveLocationWorker : Worker() {
     }
 
     override fun doWork(): Result {
-        locationRepository.getLocation().addOnSuccessListener {
-            locationDao.insertLocation(hum.swaroop.bose.entity.Location(it.latitude, it.longitude))
+        async {
+            locationRepository.getLocation().addOnSuccessListener {
+                locationDao.insertLocation(hum.swaroop.bose.entity.Location(it.latitude, it.longitude))
+            }
         }
         return Result.SUCCESS
     }
