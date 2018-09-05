@@ -43,6 +43,7 @@
     <Button
         android:id="@+id/viewSavedLocations"
         android:layout_width="0dp"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:text="@string/view_saved_locations"
         app:layout_constraintBottom_toTopOf="@id/changeProvider"
