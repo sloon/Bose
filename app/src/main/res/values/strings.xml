@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Bose</string>
+    <string name="city_name">%s, %s</string>
+    <string name="city">City</string>
+    <string name="select_city">Select City</string>
+    <string name="temperature">%.1f F</string>
+    <string name="humidity">Humidity: %.1f%%</string>
+    <string name="location">My Location</string>
+    <string name="notification_text">%.1fF with %s</string>
+    <string name="emulator_error">Something went wrong, please try on a real device.</string>
+    <string name="change_provider">Change Weather Provider</string>
+    <string name="view_saved_locations">View Saved Locations</string>
+    <string name="cancel">Cancel</string>
+
+    <array name="providers">
+        <item>Open Weather</item>
+        <item>Dark Sky</item>
+    </array>
+</resources>

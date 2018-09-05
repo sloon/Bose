@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_select_current_location"
+        android:orderInCategory="1"
+        android:title="@string/location"
+        android:icon="@drawable/ic_current_location"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_select_city"
+        android:orderInCategory="2"
+        android:title="@string/city"
+        app:showAsAction="ifRoom" />
+</menu>
