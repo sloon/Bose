@@ -12,7 +12,7 @@ Yes ->• Must Display current weather for a location submitted by the user
 No ->• Should incorporate a 'weather forecast' UI that is separate from the 'current weather'
 UI and is not displayed at the same time
 
-Yes, every 15 minutes, we get a notification ->• Must Update the weather data in the background at least every 1 hours
+Yes, every 15 minutes (which is the minimum interval at which we can schedule work using WorkManager), we get a notification ->• Must Update the weather data in the background at least every 1 hours
 
 Yes, every 15 minutes, we get a notification ->• When weather data is fetched a notification Must be displayed to the user that new
 weather data is available
