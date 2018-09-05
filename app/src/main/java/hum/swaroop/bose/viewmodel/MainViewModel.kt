@@ -151,7 +151,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun getLatLng(): List<Float> {
-        return listOf(sharedPreferences.getFloat("lat", 0f), sharedPreferences.getFloat("lat", 0f))
+        return listOf(sharedPreferences.getFloat("lat", 0f), sharedPreferences.getFloat("lng", 0f))
     }
 
     fun saveLatLng(lat: Float, lng: Float) {

@@ -22,7 +22,9 @@ class SaveLocationWorker : Worker() {
     override fun doWork(): Result {
         async {
             locationRepository.getLocation().addOnSuccessListener {
-                locationDao.insertLocation(hum.swaroop.bose.entity.Location(it.latitude, it.longitude))
+                async {
+                    locationDao.insertLocation(hum.swaroop.bose.entity.Location(it.latitude, it.longitude))
+                }
             }
         }
         return Result.SUCCESS
