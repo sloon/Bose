@@ -32,3 +32,4 @@ Yes -> • Should only access one weather source at a time
 No->• Should allow a user assign a weather source to preset button in the UI
 
 No->• Must persist last selected weather provider(s) across app starts/stops
+
