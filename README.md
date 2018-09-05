@@ -1,4 +1,5 @@
 # Bose 
+The app is buggy right now as I had limited time, can improve specific areas if required. Please let me know
 
 The following indicates what's working and what's not working, will update as I make changes:
 
